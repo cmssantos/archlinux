@@ -14,6 +14,9 @@ gnome-control-center \
 gnome-settings-daemon \
 xdg-user-dirs-gtk \
 adwaita-icon-theme \
+gnome-themes-extra \
+gnome-backgrounds \
+gnome-system-monitor
 
 # 2. GNOME apps essenciais
 echo "==> Instalando aplicativos básicos GNOME..."
@@ -26,7 +29,7 @@ loupe
 
 # 3. GNOME Extras (opcional, apps adicionais)
 echo "==> Instalando GNOME Extras (opcional)..."
-sudo pacman -S --noconfirm gnome-calculator gnome-logs
+sudo pacman -S --noconfirm gnome-calculator gnome-logs gnome-tweaks
 
 # 4. Gerenciador de login GDM (Wayland ready)
 echo "==> Instalando GDM..."
