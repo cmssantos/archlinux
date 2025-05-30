@@ -2,15 +2,13 @@
 set -euo pipefail
 
 CONFIG_DIR="$HOME/.config/pipewire"
+CONF_D_DIR="$CONFIG_DIR/pipewire.conf.d"
 
-echo "==> Criando pasta de configuração..."
-mkdir -p "$CONFIG_DIR"
+echo "==> Criando pastas de configuração..."
+mkdir -p "$CONF_D_DIR"
 
-echo "==> Copiando pipewire.conf base para override..."
-cp /usr/share/pipewire/pipewire.conf "$CONFIG_DIR/"
-
-echo "==> Aplicando ajustes de baixa latência em pipewire.conf..."
-cat > "$CONFIG_DIR/pipewire.conf" <<'EOF'
+echo "==> Criando arquivo de configuração de clock de baixa latência..."
+cat > "$CONF_D_DIR/00-clock.conf" <<EOF
 context.properties = {
     default.clock.rate          = 48000
     default.clock.quantum       = 256
@@ -19,8 +17,8 @@ context.properties = {
 }
 EOF
 
-echo "==> Reiniciando serviços Pipewire..."
+echo "==> Reiniciando serviços PipeWire..."
 systemctl --user daemon-reexec
 systemctl --user restart pipewire pipewire-pulse wireplumber
 
-echo "==> Configuração Pipewire aplicada com sucesso!"
+echo "==> Configuração PipeWire aplicada com sucesso!"
