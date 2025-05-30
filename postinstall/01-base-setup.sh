@@ -8,8 +8,7 @@ sudo pacman -Syu --noconfirm
 
 echo "==> Instalando pacotes base..."
 sudo pacman -S --needed --noconfirm \
-  base-devel git curl wget zip unzip tar zsh reflector keychain \
-  ttf-fira-code ttf-jetbrains-mono ttf-jetbrains-mono-nerd 
+  base-devel go git curl wget zip unzip tar zsh reflector keychain
 
 if ! grep -q "^%wheel ALL=(ALL) ALL" /etc/sudoers; then
   echo "==> Habilitando sudo para wheel..."
