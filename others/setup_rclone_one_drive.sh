@@ -3,7 +3,7 @@ set -euo pipefail
 
 REMOTE_NAME="onedrive"
 MOUNT_DIR="$HOME/OneDrive"
-SERVICE_FILE="$HOME/.config/systemd/user/rclone-onedrive.service"
+SERVICE_FILE="$HOME/.config/systemd/user/rclone-${REMOTE_NAME}.service"
 
 echo "==> Instalando rclone..."
 yay -S --noconfirm rclone
@@ -11,7 +11,7 @@ yay -S --noconfirm rclone
 echo "==> Criando diretório de montagem em $MOUNT_DIR..."
 mkdir -p "$MOUNT_DIR"
 
-echo "==> Instruções para configurar o remote 'onedrive'..."
+echo "==> Instruções para configurar o remote '$REMOTE_NAME'..."
 echo "    Execute: rclone config"
 echo "    - Escolha 'n' para novo remote"
 echo "    - Nome: $REMOTE_NAME"
@@ -27,28 +27,36 @@ cat > "$SERVICE_FILE" <<EOF
 [Unit]
 Description=Mount Microsoft OneDrive (rclone)
 After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/rclone mount $REMOTE_NAME: \$HOME/OneDrive \\
+ExecStart=/usr/bin/rclone mount $REMOTE_NAME: $MOUNT_DIR \\
   --vfs-cache-mode full \\
   --vfs-cache-max-size 10G \\
   --vfs-cache-max-age 12h \\
   --poll-interval 15s \\
   --dir-cache-time 72h \\
   --buffer-size 16M \\
-  --allow-other
-
-ExecStop=/bin/fusermount -u \$HOME/OneDrive
+  --allow-other \\
+  --syslog
+ExecStop=/usr/bin/fusermount -u $MOUNT_DIR
 Restart=on-failure
+RestartSec=10
 
 [Install]
 WantedBy=default.target
 EOF
 
 echo "==> Ativando serviço de montagem..."
-systemctl --user daemon-reexec
-systemctl --user enable --now rclone-onedrive
+systemctl --user daemon-reload
+systemctl --user enable --now rclone-${REMOTE_NAME}
 
+echo "==> Configuração concluída. OneDrive estará acessível em $MOUNT_DIR."
+echo "==> Verifique o status do serviço com:"
+echo "    systemctl --user status rclone-${REMOTE_NAME}"
+echo "==> Para desmontar manualmente, use:"
+echo "    fusermount -u $MOUNT_DIR"
 echo "==> Configuração concluída. OneDrive montado em $MOUNT_DIR."
+# Note: Ensure you have 'fuse' installed for rclone mount to work.
 
