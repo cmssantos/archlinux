@@ -8,7 +8,7 @@ sudo pacman -Syu --noconfirm
 
 echo "==> Instalando pacotes base..."
 sudo pacman -S --needed --noconfirm \
-  base-devel go git curl wget zip unzip tar zsh reflector keychain fuse
+  base-devel go git curl wget zip unzip tar zsh reflector keychain fuse ntfs-3g
 
 if ! grep -q "^%wheel ALL=(ALL) ALL" /etc/sudoers; then
   echo "==> Habilitando sudo para wheel..."
