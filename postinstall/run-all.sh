@@ -12,6 +12,7 @@ SCRIPTS=(
   "08-install-codecs.sh"
   "09-install-fonts.sh"
   "10-setup-firewall.sh"
+  "11-pipewire-config.sh"
 )
 
 for script in "${SCRIPTS[@]}"; do

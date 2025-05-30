@@ -15,12 +15,10 @@ yay -S --needed --noconfirm \
   ttf-vista-fonts \
   ttf-cascadia-code \
   ttf-roboto \
-  ttf-segoe-ui \
   ttf-dejavu \
   noto-fonts \
   noto-fonts-emoji \
   ttf-hack  \
-  ttf-sourcecodepro
 
 echo "==> Atualizando cache de fontes..."
 sudo fc-cache -f
